@@ -75,7 +75,7 @@ print(iris[4,])   # row 4, all columns
 # Activity 4
 data("ToothGrowth")
 ?ToothGrowth
-View(ToothGrowth)
+#View(ToothGrowth)
 is(ToothGrowth)
 is(ToothGrowth$len)
 
@@ -109,15 +109,17 @@ aggregate(len~supp+newfactor2,df,mean)
 # Coffee break
 # Final part of Thursday
 trainTitanic <- read.csv("//atkk/home/m/mohakala/Documents/RandomForest/trainTitanic.csv")
-View(trainTitanic)
+#View(trainTitanic)
 
-weatherkumpula <- read.csv("C:\\Users\\mohakala\\AppData\\Local\\Temp\\RtmpohWtxC\\data251830aa82b")
-View(weatherkumpula)
+#weatherkumpula <- read.csv("C:\\Users\\mohakala\\AppData\\Local\\Temp\\RtmpohWtxC\\data251830aa82b")
+#weatherkumpula <- read.csv("C:\\ATKK\\home\\m\\mohakala\\Documents\\RcourseApril2016\\weather-kumpula.csv")
+weatherkumpula <- read.csv("RcourseApril2016\\weather-kumpula.csv")
+#View(weatherkumpula)
 df <- weatherkumpula
 
 library(dplyr)
-df <- mutate(df,newvar=rmm+wdir)
-df2 <- trans  (df,newvar=rmm+wdir)
+#df <- mutate(df,newvar=rmm+wdir)
+#df2 <- trans  (df,newvar=rmm+wdir)
 
 ## complete.cases() tällä testataan mitkä rivit täydellisiä
 
@@ -175,7 +177,7 @@ plot(Sepal.Width~Sepal.Length,iris)
 plot(Sepal.Width~Sepal.Length,iris,subset=Species=="setosa")
 plot(Sepal.Width~Species,iris)
 ?boxplot
-example(pch)
+#example(pch)
 
 # 4.4 Package ggplot2
 library(ggplot2)
@@ -252,6 +254,104 @@ print(dfnew)
 # Cross join 
 dfnew <- merge(x = df1, y = df2, by = NULL)
 print(dfnew)
+
+
+# Study datasets 
+# http://www.statmethods.net/advstats/timeseries.html
+data(AirPassengers)
+myts <- AirPassengers
+plot(myts)
+
+# Seasonal decomposition
+fit <- stl(myts, s.window="period")
+plot(fit)
+
+# additional plots
+monthplot(myts)
+library(forecast)
+seasonplot(myts) 
+
+# simple exponential - models level
+fit <- HoltWinters(myts, beta=FALSE, gamma=FALSE)
+plot(fit)
+# double exponential - models level and trend
+fit <- HoltWinters(myts, gamma=FALSE)
+plot(fit)
+# triple exponential - models level, trend, and seasonal components
+fit <- HoltWinters(myts)
+plot(fit)
+
+# predictive accuracy
+accuracy(fit)
+
+# predict next three future values
+forecast(fit, 3)
+plot(forecast(fit, 3)) 
+
+
+## ARIMA
+# fit an ARIMA model of order P, D, Q
+#fit <- arima(myts, order=c(p, d, q))
+             
+# predictive accuracy
+#library(forecast)
+#accuracy(fit)
+             
+# predict next 5 observations
+#forecast(fit, 5)
+#plot(forecast(fit, 5)) 
+
+
+## Automated forecasting
+
+# Automated forecasting using an exponential model
+fit <- ets(myts)
+accuracy(fit)
+forecast(fit, 5)
+plot(forecast(fit, 5)) 
+plot(forecast(fit, 5),xlim=c(1960,1962))
+
+# Automated forecasting using an ARIMA model
+fit <- auto.arima(myts)
+accuracy(fit)
+forecast(fit, 5)
+plot(forecast(fit, 5)) 
+plot(forecast(fit, 5),xlim=c(1960,1962))
+
+# More timeseries, by Seija
+# google: R help convert time series to data.frame
+data(Nile)
+summary(Nile)
+is(Nile)
+tmp <- as.numeric(Nile)
+tmp
+time(Nile)
+Niledf <- data.frame(year=time(Nile),flow=as.numeric(Nile))
+summary(Niledf)
+?Nile
+
+# JSON tests
+library(rjson)
+url2='http://avoindata.prh.fi:80/bis/v1?totalResults=false&maxResults=10&resultsFrom=0&companyRegistrationFrom=2014-02-28'
+#jsontest <- fromJSON(readLines(url2))
+
+# Print list in the list
+jsontest[[8]][[1]]
+
+# Print company from list in the list
+jsontest[[8]][[1]][2]
+
+
+# More, Seija 
+data(ChickWeight)
+painot <- do.call(rbind,by(data = ChickWeight,INDICES = ChickWeight$Chick,FUN=function(d)
+  {
+  with(d,data.frame(Chick=Chick[1],painoero=weight[which.max(Time)]-weight[which.min(Time)])) 
+  }))
+print(painot)
+
+
+
 
 
 
