@@ -33,8 +33,10 @@ df <- na.omit(df)
 
 plot(df$Rv,df$Neliohinta)
 
+# Prepare train and test sets
 train <- df[c(1:250),]
 test <- df[c(251:309),-3]  # remove Talotiedot
+test2 <- df[c(309:309),-3]  # remove Talotiedot
 
 #D Random Forest
 
@@ -46,14 +48,28 @@ varImpPlot(my_forest)
 
 
 #E Predictions
+
 r <- randomForest(Talotiedot ~., data=train, importance=TRUE, do.trace=100)
 predict(r, test)
+predict(r, test2)
 
-# Predictions - In progress...
+# Create own test set
+# http://www.dummies.com/how-to/content/how-to-create-a-data-frame-from-scratch-in-r.html
+Kaupunginosa=c('Klaukkala','KirkonkylÃ¤')
+Huoneet=c(3,3)
+m2=c(86,92)
+Vh=c(170000,180000)
+Neliohinta=c(2000,2100)
+Rv=c(1986,1991)
+Hissi=c('ei','on')
+testdf=data.frame(Kaupunginosa,Huoneet,m2,Vh,Neliohinta,Rv,Hissi)
+levels(testdf$Kaupunginosa) <- levels(train$Kaupunginosa)  # Same levels must be found in test and train
+testdf[, c(2,4:6)] <- sapply(testdf[, c(2,4:6)], as.integer) # Needed to change type to int
+str(testdf)
+#
 
-# newtest <- c("Klaukkala", 4, 86, 19000, 2018, 1986, "ei")
-# does not work r <- randomForest(Talotiedot ~., data=newtest, importance=TRUE, do.trace=100)
-# predict(r, test)
+print(predict(r, testdf))
+
 
 
 
