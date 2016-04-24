@@ -108,14 +108,14 @@ aggregate(len~supp+newfactor2,df,mean)
 
 # Coffee break
 # Final part of Thursday
-trainTitanic <- read.csv("//atkk/home/m/mohakala/Documents/RandomForest/trainTitanic.csv")
-#View(trainTitanic)
+#trainTitanic <- read.csv("//atkk/home/m/mohakala/Documents/RandomForest/trainTitanic.csv")
+##View(trainTitanic)
 
-#weatherkumpula <- read.csv("C:\\Users\\mohakala\\AppData\\Local\\Temp\\RtmpohWtxC\\data251830aa82b")
-#weatherkumpula <- read.csv("C:\\ATKK\\home\\m\\mohakala\\Documents\\RcourseApril2016\\weather-kumpula.csv")
-weatherkumpula <- read.csv("RcourseApril2016\\weather-kumpula.csv")
+##weatherkumpula <- read.csv("C:\\Users\\mohakala\\AppData\\Local\\Temp\\RtmpohWtxC\\data251830aa82b")
+##weatherkumpula <- read.csv("C:\\ATKK\\home\\m\\mohakala\\Documents\\RcourseApril2016\\weather-kumpula.csv")
+#weatherkumpula <- read.csv("RcourseApril2016\\weather-kumpula.csv")
 #View(weatherkumpula)
-df <- weatherkumpula
+#df <- weatherkumpula
 
 library(dplyr)
 #df <- mutate(df,newvar=rmm+wdir)
